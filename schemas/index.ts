@@ -1,7 +1,13 @@
 import {
-  integer, pgTable, varchar, real, text,time, date
+  integer,
+  pgTable,
+  varchar,
+  real,
+  text,
+  time,
+  date,
+  pgEnum,
 } from "drizzle-orm/pg-core";
-
 
 // Roles Table
 export const roles = pgTable("roles", {
@@ -43,6 +49,8 @@ export const schedules = pgTable("schedules", {
   endTime: time("end_time"),
 });
 
+export const typeEnum = pgEnum("type", ["entry", "exit"]);
+
 // Attendances Table
 export const attendances = pgTable("attendances", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -50,5 +58,5 @@ export const attendances = pgTable("attendances", {
   date: date("date"),
   time: time("time"),
   status: text("status"),
-  type: text("type"),
+  type: typeEnum(),
 });

@@ -9,20 +9,14 @@ import {
 import { db } from ".";
 
 async function executeSeed() {
-
   // Seed para roles
-  await db.insert(roles).values([
-    { role: "admin" },
-    { role: "user" },
-  ]);
+  await db.insert(roles).values([{ role: "admin" }, { role: "user" }]);
   console.log("Roles inserted");
 
   // Seed para work areas
-  await db.insert(workAreas).values([
-    {  area: "IT" },
-    {  area: "HR" },
-    { area: "Finanzas" }
-  ]);
+  await db
+    .insert(workAreas)
+    .values([{ area: "IT" }, { area: "HR" }, { area: "Finanzas" }]);
   console.log("Work areas inserted");
 
   // Seed para user_details
@@ -35,7 +29,6 @@ async function executeSeed() {
       idWorkArea: 1,
     },
     {
-      
       firstName: "Ana",
       lastName: "López",
       email: "ana.lopez@example.com",
