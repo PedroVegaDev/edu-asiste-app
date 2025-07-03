@@ -50,6 +50,8 @@ export const schedules = pgTable("schedules", {
 });
 
 export const typeEnum = pgEnum("type", ["entry", "exit"]);
+export const statusEnum = pgEnum("status", ["on time",  "late"])
+
 
 // Attendances Table
 export const attendances = pgTable("attendances", {
@@ -57,6 +59,6 @@ export const attendances = pgTable("attendances", {
   idUser: integer("id_user").references(() => users.id),
   date: date("date"),
   time: time("time"),
-  status: text("status"),
+  status: statusEnum(),
   type: typeEnum(),
 });
