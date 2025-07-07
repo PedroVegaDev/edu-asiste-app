@@ -5,7 +5,7 @@ import {
   users,
   schedules,
   attendances,
-} from "@/schemas";
+} from "@/lib/drizzle/schemas";
 import { db } from ".";
 
 async function executeSeed() {

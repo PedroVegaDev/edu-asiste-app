@@ -1,8 +1,19 @@
-"use client";
 import Image from "next/image";
-import { Form, Input, Button } from "@heroui/react";
+import { LoginForm } from "./components/LoginForm";
+import type { Metadata } from "next";
+import { auth } from "@/lib/next-auth";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export const metadata: Metadata = {
+  title: "Login",
+};
+
+export default async function LoginPage() {
+  const session = await auth();
+
+  if (session?.user?.role === "admin") return redirect("/escanear-qr");
+  if (session?.user?.role === "user") return redirect("/asistencia-qr");
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
       <Image
@@ -13,31 +24,8 @@ export default function LoginPage() {
         alt="EduAsiste Logo"
         className="dark:invert scale-75 mb-4"
       />
-      <Form className="w-80">
-        <Input
-          isRequired
-          name="email"
-          type="email"
-          label="Correo"
-          className="mb-4"
-          labelPlacement="outside"
-          placeholder="jose@gmail.com"
-          errorMessage="El correo es requerido"
-        />
-        <Input
-          isRequired
-          name="password"
-          type="password"
-          className="mb-3"
-          label="Contraseña"
-          placeholder="********"
-          labelPlacement="outside"
-          errorMessage="La contraseña es requerida"
-        />
-        <Button type="submit" variant="bordered" className="w-full">
-          Ingresar
-        </Button>
-      </Form>
+
+      <LoginForm />
     </main>
   );
 }

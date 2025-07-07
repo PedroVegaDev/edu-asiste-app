@@ -1,12 +1,12 @@
+import { sql } from "drizzle-orm";
 import {
   integer,
   pgTable,
-  varchar,
-  real,
   text,
   time,
   date,
   pgEnum,
+  pgView,
 } from "drizzle-orm/pg-core";
 
 // Roles Table
@@ -50,8 +50,7 @@ export const schedules = pgTable("schedules", {
 });
 
 export const typeEnum = pgEnum("type", ["entry", "exit"]);
-export const statusEnum = pgEnum("status", ["on time",  "late"])
-
+export const statusEnum = pgEnum("status", ["on time", "late"]);
 
 // Attendances Table
 export const attendances = pgTable("attendances", {
@@ -62,3 +61,29 @@ export const attendances = pgTable("attendances", {
   status: statusEnum(),
   type: typeEnum(),
 });
+
+export const viewAttendanceList = pgView("view_attendance_list", {
+  id: integer(),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  date: date(),
+  time: time(),
+  dni: text(),
+  email: text(),
+}).as(
+  sql`SELECT attendances.id, user_details.first_name, user_details.last_name, attendances.date, attendances."time", users.dni, user_details.email FROM attendances JOIN users ON attendances.id_user = users.id JOIN user_details ON users.id_user_detail = user_details.id`
+);
+
+export const viewLogin = pgView("view_login", {
+  id: integer(),
+  dni: text(),
+  password: text(),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  role: text(),
+}).as(
+  sql`SELECT users.id, users.dni, users.password, user_details.first_name, user_details.last_name, roles.role FROM users JOIN roles ON users.id_role = roles.id JOIN user_details ON users.id_user_detail = user_details.id`
+);
+
+export type SelectViewLogin = typeof viewLogin.$inferSelect;
+export type SelectViewAttendanceList = typeof viewAttendanceList.$inferSelect;

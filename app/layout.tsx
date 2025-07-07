@@ -3,7 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "Edu Asiste App",
+  title: { template: "%s | Edu Asiste App", default: "Edu Asiste App" },
   description: "Edu Asiste App description",
 };
 
